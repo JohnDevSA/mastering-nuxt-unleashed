@@ -1,1 +1,42 @@
+name: Lint on Main Merge
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        # When pushing back to main, it's important to disable persistence of the default credentials to avoid re-triggering:
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Run Linter with Auto-Fix
+        run: pnpm run lint -- --fix
+
+      - name: Check for Changed Files
+        id: git-check
+        run: git diff --exit-code
+
+      - name: Commit and Push Auto-Fixes
+        if: steps.git-check.outcome == 'failure'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore(lint): auto-fix linting issues [skip ci]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
