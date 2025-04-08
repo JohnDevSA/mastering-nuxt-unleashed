@@ -27,7 +27,7 @@ jobs:
         run: pnpm install
 
       - name: Run Linter with Auto-Fix
-        run: pnpm run lint -- --fix
+        run: pnpm run lint --fix
 
       - name: Check for Changed Files
         id: git-check
