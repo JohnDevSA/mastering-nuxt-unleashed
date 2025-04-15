@@ -6,5 +6,14 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
   css: ['~/assets/css/main.css'],
-  modules: ['@nuxt/ui', '@nuxt/eslint']
+  modules: ['@nuxt/ui', '@nuxt/eslint'],
+  eslint: {
+    config: {
+      stylistic: {
+        indent: 'tab',
+        semi: true,
+      }
+    }
+
+  }
 })
