@@ -1,50 +1,54 @@
 <template>
     <div ref="scrollContainer" class="scroll-container" >
         <UContainer class="chat-container">
-          <!--.. -->
-          <div v-if="!messages?.length" class="empty-state">
-            <div class="empty-state-card">
-              <h2 class="empty-state-title">Start your chat</h2>
-              <ChatInput @send-message="handleSendMessage" />
+          <ChatWindowSkeletonLoader v-if="!isReady" />
+          <div v-else>
+            <!--.. -->
+            <div v-if="!messages?.length" class="empty-state">
+              <div class="empty-state-card">
+                <h2 class="empty-state-title">Start your chat</h2>
+                <ChatInput @send-message="handleSendMessage" />
+              </div>
             </div>
-          </div>
 
-          <template v-else>
-            <div class="chat-header">
-              <h1 class="title">
-                {{ chat?.title || 'Untitled Chat' }}
-              </h1>
-            </div>
-            <div class="messages-container">
-              <div
-                  v-for="message in messages"
-                  :key="message.id"
-                  class="message"
-                  :class="{
+            <template v-else>
+              <div class="chat-header">
+                <h1 class="title">
+                  {{ chat?.title || 'Untitled Chat' }}
+                </h1>
+              </div>
+              <div class="messages-container">
+                <div
+                    v-for="message in messages"
+                    :key="message.id"
+                    class="message"
+                    :class="{
               'message-user': message.role === 'user',
               'message-ai': message.role === 'assistant',
             }"
-              >
-                <div class="message-content">
-                  {{ message.content }}
+                >
+                  <div class="message-content">
+                    {{ message.content }}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="message-form-container">
-              <div class="scroll-to-bottom-button-container">
-                <UButton
-                    v-if="showScrollButton"
-                    color="neutral"
-                    variant="outline"
-                    icon="i-heroicons-arrow-down"
-                    class="rounded-full shadow-sm"
-                    @click="() => scrollToBottom()"
-                />
+              <div class="message-form-container">
+                <div class="scroll-to-bottom-button-container">
+                  <UButton
+                      v-if="showScrollButton"
+                      color="neutral"
+                      variant="outline"
+                      icon="i-heroicons-arrow-down"
+                      class="rounded-full shadow-sm"
+                      @click="() => scrollToBottom()"
+                  />
+                </div>
+                <ChatInput @send-message="handleSendMessage" />
               </div>
-              <ChatInput @send-message="handleSendMessage" />
-            </div>
-          </template>
+            </template>
+          </div>
+
         </UContainer>
     </div>
 </template>
@@ -52,10 +56,17 @@
 const { chat, messages, sendMessage } = useChat();
 const { pinToBottom, scrollToBottom, showScrollButton } =
     useChatScroll();
+const isReady = ref(false);
 
 function handleSendMessage (message: string) {
 	sendMessage(message);
 }
+
+onMounted(() => {
+	setTimeout(() => {
+		isReady.value = true;
+	}, 5000);
+});
 
 watch(() => messages.value, pinToBottom, { deep: true });
 </script>
