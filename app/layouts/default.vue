@@ -9,7 +9,7 @@
 <style scoped>
   .layout-container {
     height: calc(100vh - 4rem);
-    background-color: var(--ui-primary);
+    background-color: var(--ui-bg);
   }
 
   .main-content {
