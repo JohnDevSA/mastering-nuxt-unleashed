@@ -1,4 +1,4 @@
-import type { Chat, ChatMessage } from '../types';
+import type { Chat, ChatMessage } from '~/types';
 
 // Mock data for initial messages
 const MOCK_MESSAGES: ChatMessage[] = [
