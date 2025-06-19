@@ -1,8 +1,9 @@
 <template>
-    <div ref="scrollContainer" class="scroll-container" >
-        <UContainer class="chat-container">
+    <div ref="scrollContainer" class="scroll-container" style="border: 2px solid white" >
+        <UContainer class="chat-container" style="border: 2px solid red">
           <ChatWindowSkeletonLoader v-if="!isReady" />
           <div v-else>
+            <RightDrawer style="border: 2px dotted white;" />
             <!--.. -->
             <div v-if="!messages?.length" class="empty-state">
               <div class="empty-state-card">
@@ -11,7 +12,7 @@
               </div>
             </div>
 
-            <template v-else>
+            <template v-else >
               <div class="chat-header">
                 <h1 class="title">
                   {{ chat?.title || 'Untitled Chat' }}
@@ -53,6 +54,8 @@
     </div>
 </template>
 <script setup lang="ts">
+import RightDrawer from "~/components/RightDrawer.vue";
+
 const { chat, messages, sendMessage } = useChat();
 const { pinToBottom, scrollToBottom, showScrollButton } =
     useChatScroll();

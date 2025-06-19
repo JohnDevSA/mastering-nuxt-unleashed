@@ -25,7 +25,8 @@ export default withNuxt(
 			'vue/block-order': ['error', {
 				'order': ['template', 'script', 'style']
 			}],
-			'vue/no-empty-component-block': 'error'
+			'vue/multi-word-component-names': 'off',
+			'vue/no-empty-component-block': 'error',
 		}
 	}
 )
